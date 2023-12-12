@@ -132,3 +132,16 @@ class DocAppointment:
             conn.commit()
         finally:
             self.database.close(conn, cur) 
+
+
+database = data_base()
+
+my_patient = patient(pat_id=11, name='Володимир Володимирович Володимир', email='volodimir@example.com', database=database)
+my_patient.note_check()
+
+application = DocAppointment(application_id=1, patient=my_patient, status='waiting', database=database)
+application.add2bd()
+
+doc = doctor(doc_id=11, doc_fio='Доктор Врачов Докторович', doc_specialization='Врач', doc_room=228, database=database)
+doc.add2db()
+ 
