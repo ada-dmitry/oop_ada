@@ -70,14 +70,13 @@ class doctor:
         finally:
             self.db.close(conn, cur)
     
-    def workload_check(self, timetable):
+    def workload_check(self, time_of_appoint): #как сделать?
         conn = None
         cur = None
         try:
             conn = self.db.connect()
             cur = conn.cursor()
-            if (timetable.loanAmount <= 50000):
-                # что вместо апдейта?
+            if (self.time_of_appoint == time_of_appoint):
                 cur.execute("UPDATE loan_applications SET status = %s WHERE application_id = %s", ('approved', timetable.applicationID))
             else:
                 cur.execute("UPDATE loan_applications SET status = %s WHERE application_id = %s", ('rejected', timetable.applicationID))  
@@ -97,18 +96,19 @@ class DocAppointment:
         self.appointment_id = appointment_id
         self.patient = patient
         self.status = status
+        self.time_of_appoint
         self.db = db
         
-    def addToDatabase(self):
-        conn = None
-        cur = None
-        try:
-            conn = self.database.connect()
-            cur = conn.cursor()
-            cur.execute("INSERT INTO loan_applications (client_id, loan_amount, status) VALUES (%s, %s, %s)", (self.client.clientID, self.loanAmount, self.status))
-            conn.commit()
-        finally:
-            self.database.close(conn, cur)
+    # def addToDatabase(self):
+    #     conn = None
+    #     cur = None
+    #     try:
+    #         conn = self.database.connect()
+    #         cur = conn.cursor()
+    #         cur.execute("INSERT INTO appointment (client_id, loan_amount, status) VALUES (%s, %s, %s)", (self.client.clientID, self.loanAmount, self.status))
+    #         conn.commit()
+    #     finally:
+    #         self.database.close(conn, cur)
         
     def del_appoint(self):
         conn = None
@@ -127,7 +127,8 @@ class DocAppointment:
         try:
             conn = self.database.connect()
             cur = conn.cursor()
-            cur.execute("INSERT INTO appointment (appointment_id, patient, status) VALUES (%s, %s, %s)", self.appointment_id, self.patient, self.status)
+            cur.execute("INSERT INTO appointment (appointment_id, patient, status, time_of_appoint) VALUES (%s, %s, %s, %s)",\
+                         self.appointment_id, self.patient, self.status, self.time_of_appoint)
             conn.commit()
         finally:
             self.database.close(conn, cur) 
