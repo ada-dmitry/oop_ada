@@ -70,16 +70,16 @@ class doctor:
         finally:
             self.db.close(conn, cur)
     
-    def workload_check(self, time_of_appoint): #как сделать?
+    def workload_check(self, time_of_appoint): 
         conn = None
         cur = None
         try:
             conn = self.db.connect()
             cur = conn.cursor()
             if (self.time_of_appoint == time_of_appoint):
-                cur.execute("UPDATE loan_applications SET status = %s WHERE application_id = %s", ('approved', timetable.applicationID))
+                cur.execute("UPDATE  SET status = %s WHERE application_id = %s", ('approved', time_of_appoint.applicationID))
             else:
-                cur.execute("UPDATE loan_applications SET status = %s WHERE application_id = %s", ('rejected', timetable.applicationID))  
+                cur.execute("UPDATE SET status = %s WHERE application_id = %s", ('rejected', time_of_appoint.applicationID))  
             conn.commit()
         finally:
             self.db.close(conn, cur)
@@ -98,17 +98,6 @@ class DocAppointment:
         self.status = status
         self.time_of_appoint
         self.db = db
-        
-    # def addToDatabase(self):
-    #     conn = None
-    #     cur = None
-    #     try:
-    #         conn = self.database.connect()
-    #         cur = conn.cursor()
-    #         cur.execute("INSERT INTO appointment (client_id, loan_amount, status) VALUES (%s, %s, %s)", (self.client.clientID, self.loanAmount, self.status))
-    #         conn.commit()
-    #     finally:
-    #         self.database.close(conn, cur)
         
     def del_appoint(self):
         conn = None
